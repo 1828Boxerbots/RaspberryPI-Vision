@@ -106,7 +106,7 @@ namespace {
         int m_highVal = 255;
         int m_lowVal = 134;
         //Kernel
-        int m_kernelSize = 20;
+        int m_kernelSize = 10;
 
         double m_centroidX = -1;
         double m_centroidY = -1;
@@ -131,6 +131,15 @@ namespace {
         // contours
         cv::findContours(m_dilate, m_contours, m_hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
         m_contourImg = cv::Mat::zeros(m_range.rows, m_range.cols, CV_8UC3);
+
+        // If no contours Stop the function
+        if (m_contours.size() <= 0)
+        {
+            m_turnAngle = -666.0;
+            m_contourCols = m_contourImg.cols;
+            return m_contourImg;
+        }
+
         // loop through all contours
         for (int i = 0; i < m_contours.size(); i++)
         {
